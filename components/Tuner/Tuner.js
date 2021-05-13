@@ -43,13 +43,18 @@ const Tuner = ({
   }, []);
 
   return (
-    <Plane backgroundColor={colorTheme.pink}>
+    <View
+      style={[
+        globalStyle.section,
+        {backgroundColor: colorTheme.pink, borderBottomColor: colorTheme.grey},
+      ]}>
       <View style={styles.header}>
         <Text
-          style={[
-            globalStyle.h1,
-            {color: canTunerEnable ? colorTheme.white : colorTheme.grey},
-          ]}>
+          style={{
+            color: canTunerEnable ? colorTheme.white : colorTheme.grey,
+            fontSize: 30,
+            fontWeight: 'bold',
+          }}>
           Tuner
         </Text>
         <OnOff
@@ -89,7 +94,7 @@ const Tuner = ({
           </Text>
         )}
       </View>
-    </Plane>
+    </View>
   );
 };
 

@@ -1,19 +1,24 @@
 import React, {useState, useEffect} from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import useTone from '../hooks/useTone';
 import OnOff from './OnOff';
-import Plane from './Plane';
 import colorTheme from '../colorTheme';
-import globalStyle from '../globalStyle';
+import Popover from 'react-native-popover-view';
 import Picker from 'rmc-picker';
+import globalStyle from '../globalStyle';
 
-const Tone = ({isToneStarted, setIsToneStarted = () => {}, canToneEnable}) => {
+const Tone = ({
+  navigation,
+  isToneStarted,
+  setIsToneStarted = () => {},
+  canToneEnable,
+}) => {
   // State
   const [note, setNote] = useState('C4');
   const [play, stop, changeFreq] = useTone();
 
   // functions
-  const gerFrequencyRounded = function (note) {
+  const getFrequencyRounded = function (note) {
     let notes = [
       'A',
       'A#',
@@ -68,10 +73,9 @@ const Tone = ({isToneStarted, setIsToneStarted = () => {}, canToneEnable}) => {
     let list = [];
     for (let octave = 1; octave < 7; octave++) {
       for (let note of notes) {
-        let currentNote = `${note}${octave}`;
         list.push(
-          <Picker.Item value={currentNote} key={currentNote}>
-            {currentNote}
+          <Picker.Item value={note + octave} key={`${note + octave}-note`}>
+            {note + octave}
           </Picker.Item>,
         );
       }
@@ -89,59 +93,53 @@ const Tone = ({isToneStarted, setIsToneStarted = () => {}, canToneEnable}) => {
   }, []);
 
   return (
-    <Plane backgroundColor={colorTheme.white}>
-      <View style={styles.header}>
-        <Text
-          style={[
-            globalStyle.h1,
-            {color: canToneEnable ? colorTheme.black : colorTheme.grey},
-          ]}>
-          Tone Gen
-        </Text>
-        <OnOff
-          state={isToneStarted}
-          setState={value => {
-            value ? play(gerFrequencyRounded(note)) : stop();
-            setIsToneStarted(value);
-          }}
-          disabled={!canToneEnable}
-          baseColor={colorTheme.white}
-          bgColor={canToneEnable ? colorTheme.black : colorTheme.grey}
-          width={100}></OnOff>
-      </View>
-      <View style={styles.container}>
+    <Popover
+      from={
+        <TouchableOpacity>
+          <View
+            style={[
+              globalStyle.smallSection,
+              {
+                borderBottomColor: colorTheme.grey,
+                backgroundColor: colorTheme.white,
+                borderStartColor: colorTheme.grey,
+                borderEndColor: colorTheme.grey,
+              },
+            ]}>
+            <Text
+              style={{
+                fontWeight: 'bold',
+                fontSize: 20,
+                textAlignVertical: 'center',
+              }}>
+              Tone Gen
+            </Text>
+            <Text style={{textAlignVertical: 'center'}}>Note: {note}</Text>
+            <OnOff
+              state={isToneStarted}
+              setState={value => {
+                value ? play(getFrequencyRounded(note)) : stop();
+                setIsToneStarted(value);
+              }}
+              disabled={!canToneEnable}
+              baseColor={canToneEnable ? colorTheme.white : colorTheme.grey}
+              bgColor={colorTheme.black}
+              width={100}></OnOff>
+          </View>
+        </TouchableOpacity>
+      }>
+      <View style={globalStyle.selectionBox}>
         <Picker
           selectedValue={note}
           onValueChange={value => {
             setNote(value);
-            changeFreq(gerFrequencyRounded(value));
+            changeFreq(getFrequencyRounded(value));
           }}>
           {getAllNotes()}
         </Picker>
       </View>
-      {!isToneStarted && (
-        <Text
-          style={{color: colorTheme.grey, marginTop: 4, textAlign: 'center'}}>
-          Tone Generator is not on.
-        </Text>
-      )}
-    </Plane>
+    </Popover>
   );
 };
 
-const styles = StyleSheet.create({
-  header: {
-    flex: 2,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderBottomWidth: 1,
-    borderBottomColor: colorTheme.grey,
-  },
-  container: {
-    flex: 5,
-    flexDirection: 'column',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-  },
-});
 export default Tone;

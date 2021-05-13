@@ -8,9 +8,30 @@ const globalStyle = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: colorTheme.bright,
   },
-  h1: {
-    fontSize: 30,
-    marginBottom: 5,
+  smallSection: {
+    width: '100%',
+    padding: 20,
+    borderRadius: 50,
+    borderEndWidth: 0.1,
+    borderStartWidth: 0.1,
+    borderBottomWidth: 5,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignContent: 'flex-end',
+    marginBottom: 10,
+  },
+  selectionBox: {
+    width: 200,
+    height: 200,
+  },
+  section: {
+    marginBottom: 15,
+    padding: 12,
+    minHeight: 200,
+    borderRadius: 15,
+    borderEndWidth: 0.1,
+    borderStartWidth: 0.1,
+    borderBottomWidth: 5,
   },
 });
 

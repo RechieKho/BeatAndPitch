@@ -207,6 +207,9 @@ dependencies {
         exclude group:'com.facebook.flipper'
     }
 
+    // react native metronome
+    compile project(':react-native-metronome')
+
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";
         debugImplementation files(hermesPath + "hermes-debug.aar")

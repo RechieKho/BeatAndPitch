@@ -15,7 +15,7 @@ const HomeStack = () => {
           name="Main"
           component={Main}
           options={{
-            title: 'Beats & Pitches',
+            title: 'Beat & Pitch',
             headerTintColor: colorTheme.dark,
             headerTitleAlign: 'center',
             headerStyle: {

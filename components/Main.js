@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
-import {View, ScrollView, PermissionsAndroid} from 'react-native';
+import {View, PermissionsAndroid, TouchableOpacity, Text} from 'react-native';
 import globalStyle from '../globalStyle';
 import {useEffect} from 'react';
+import colorTheme from '../colorTheme';
 import Tuner from './Tuner/Tuner';
 import Tone from './Tone';
+import Metronome from './Metronome';
 
 const Main = ({navigation}) => {
   const [isPermissionDone, setIsPermissionDone] = useState(false);
@@ -51,19 +53,49 @@ const Main = ({navigation}) => {
 
   return (
     <View style={globalStyle.body}>
-      <ScrollView style={{flex: 1}}>
-        {isPermissionDone && (
-          <Tuner
-            isTunerStarted={isTunerStarted}
-            setIsTunerStarted={setIsTunerStarted}
-            canTunerEnable={canTunerEnable()}></Tuner>
-        )}
-        <Tone
-          isToneStarted={isToneStarted}
-          setIsToneStarted={setIsToneStarted}
-          canToneEnable={canToneEnable()}
-        />
-      </ScrollView>
+      {isPermissionDone && (
+        <Tuner
+          isTunerStarted={isTunerStarted}
+          setIsTunerStarted={setIsTunerStarted}
+          canTunerEnable={canTunerEnable()}></Tuner>
+      )}
+      <Tone
+        navigation={navigation}
+        isToneStarted={isToneStarted}
+        setIsToneStarted={setIsToneStarted}
+        canToneEnable={canToneEnable()}
+      />
+      <Metronome
+        isTickerStarted={isTickerStarted}
+        setIsTickerStarted={setIsTickerStarted}
+        canTickerEnable={canTickerEnable()}
+      />
+      {/* About */}
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('About');
+        }}>
+        <View
+          style={[
+            globalStyle.smallSection,
+            {
+              backgroundColor: colorTheme.yellow,
+              borderBottomColor: colorTheme.grey,
+              borderStartColor: colorTheme.grey,
+              borderEndColor: colorTheme.grey,
+            },
+          ]}>
+          <Text
+            style={{
+              fontWeight: 'bold',
+              fontSize: 20,
+              textAlignVertical: 'center',
+            }}>
+            About
+          </Text>
+          <Text style={{textAlignVertical: 'center'}}>Go To About &gt;</Text>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };
