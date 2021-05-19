@@ -1,0 +1,7 @@
+rootProject.name = 'BeatAndPitch'
+apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
+include ':app'
+
+// react native metronome from https://github.com/kotlyar562/react-native-metronome
+include ':react-native-metronome'
+project(':react-native-metronome').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-metronome/android')
